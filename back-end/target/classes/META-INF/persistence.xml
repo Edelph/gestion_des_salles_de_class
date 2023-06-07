@@ -1,0 +1,23 @@
+<?xml version="1.0"  encoding="UTF-8"?>
+<persistence  xmlns="http://java.sun.com/xml/ns/persistence"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              version="1.0"  xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+              http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+    <persistence-unit  name="myPersistance">
+        <class>com.edelph.jhon.gestion_salle.entity.Grade</class>
+        <class>com.edelph.jhon.gestion_salle.entity.Professeur</class>
+        <class>com.edelph.jhon.gestion_salle.entity.Salle</class>
+        <class>com.edelph.jhon.gestion_salle.entity.Occuper</class>
+        <properties>
+            <property name="jakarta.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/gestion_salle"/>
+            <property name="jakarta.persistence.jdbc.user" value="root"/>
+            <property name="jakarta.persistence.jdbc.password" value=""/>
+
+            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.format_sql" value="true" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
+            <property name="hibernate.hbm2ddl.auto" value="create" />
+        </properties>
+    </persistence-unit>
+</persistence>
