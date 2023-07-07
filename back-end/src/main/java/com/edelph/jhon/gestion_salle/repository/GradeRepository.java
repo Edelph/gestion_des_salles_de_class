@@ -13,7 +13,7 @@ public class GradeRepository implements InterfaceCRUD<Grade> {
     Session session;
 
     public GradeRepository() {
-        session = MySessionFactory.getSessionFactory().getCurrentSession();
+        session = MySessionFactory.getSessionFactory().openSession();
     }
 
     @Override
@@ -29,6 +29,7 @@ public class GradeRepository implements InterfaceCRUD<Grade> {
         Transaction transaction = session.beginTransaction();
         Optional<Grade> gradeOptional = session.byId(Grade.class).loadOptional(idThing);
         transaction.commit();
+        session.clear();
         if(gradeOptional.isPresent()) return gradeOptional.get();
         throw new NotFoundException("Not found grade having id " + idThing);
     }
@@ -36,7 +37,9 @@ public class GradeRepository implements InterfaceCRUD<Grade> {
     @Override
     public Grade update(Grade grade) {
         Transaction transaction = session.beginTransaction();
-        session.persist(grade);
+        Grade gradeDB = session.find(Grade.class, grade.getCodeGrade());
+        gradeDB.setDesignation(grade.getDesignation());
+        session.flush();
         transaction.commit();
         return grade;
     }

@@ -1,11 +1,10 @@
 package com.edelph.jhon.gestion_salle.resources;
 
 import com.edelph.jhon.gestion_salle.entity.Grade;
-import com.edelph.jhon.gestion_salle.repository.GradeRepository;
-import com.edelph.jhon.gestion_salle.repository.exeption.NotFoundException;
 import com.edelph.jhon.gestion_salle.service.GradeService;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
@@ -18,17 +17,28 @@ import java.util.List;
 public class GradeResource {
     @GET
     @Path("/{id}")
-    public Grade  getGrade(@PathParam("id") Long id) {
-        GradeService service = new GradeService();
-        return service.find(id);
+    public Response  getGrade(@PathParam("id") Long id) {
+        try {
+            GradeService service = new GradeService();
+            Grade grade =  service.find(id);
+            return Response.ok(grade).build();
+        }catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PUT
     @Path("/{id}")
-    public Grade  updateGrade(@PathParam("id") Long id, Grade grade) {
-        if(id == null && id != grade.getCodeGrade()) throw new NotFoundException("Invalid requested");
-        GradeService service = new GradeService();
-        return service.update(grade);
+    public Response updateGrade(@PathParam("id") Long id, Grade grade) {
+        try {
+            grade.setCodeGrade(id);
+            GradeService service = new GradeService();
+            grade =  service.update(grade);
+            return Response.status(Response.Status.OK).entity(grade).build();
+
+        }catch (Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @GET
@@ -44,7 +54,8 @@ public class GradeResource {
     }
 
     @GET
-    public List<Grade> searchGrad(@QueryParam("search") String patern){
+    @Path("/search/{patern}")
+    public List<Grade> searchGrad(@PathParam("patern") String patern){
         GradeService service = new GradeService();
         return service.getGradeLikeDesignation(patern).stream().toList();
     }
@@ -52,8 +63,14 @@ public class GradeResource {
 
     @DELETE
     @Path("/{id}")
-    public boolean deleteGrade(@PathParam("id") Long id) {
-        GradeService service = new GradeService();
-        return service.remove(id);
+    public Response deleteGrade(@PathParam("id") Long id) {
+        try {
+            GradeService service = new GradeService();
+            boolean resp =  service.remove(id);
+            return Response.ok(resp).build();
+        }catch (Exception e) {
+            return Response.status(500).build();
+        }
+
     }
 }

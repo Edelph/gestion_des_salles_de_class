@@ -15,13 +15,14 @@ import java.util.Optional;
 public class ProfesseurRepository implements InterfaceCRUD<Professeur>{
     Session session;
 
-    public ProfesseurRepository(Session session) {
-        this.session = MySessionFactory.getSessionFactory().getCurrentSession();
+    public ProfesseurRepository() {
+        this.session = MySessionFactory.getSessionFactory().openSession();
     }
 
     @Override
     public Professeur create(Professeur professeur) {
         Transaction transaction = session.getTransaction();
+        transaction.begin();
         session.persist(professeur);
         transaction.commit();
         return professeur;
@@ -30,6 +31,7 @@ public class ProfesseurRepository implements InterfaceCRUD<Professeur>{
     @Override
     public Professeur read(Long codeProfesseur) {
         Transaction transaction = session.getTransaction();
+        transaction.begin();
         Optional<Professeur> professeurOpt =  session.byId(Professeur.class).loadOptional(codeProfesseur);
         transaction.commit();
         if (professeurOpt.isPresent()) return professeurOpt.get();
@@ -39,14 +41,18 @@ public class ProfesseurRepository implements InterfaceCRUD<Professeur>{
     @Override
     public Professeur update(Professeur professeur) {
         Transaction transaction = session.getTransaction();
-        session.persist(professeur);
+        transaction.begin();
+        Professeur prof = session.find(Professeur.class,professeur.getCodeProf());
+        prof.update(professeur);
+        session.flush();
         transaction.commit();
-        return professeur;
+        return prof;
     }
 
     @Override
     public boolean delete(Long codeProfesseur) {
         Transaction transaction = session.getTransaction();
+        transaction.begin();
         Optional<Professeur> professeurOpt =  session.byId(Professeur.class).loadOptional(codeProfesseur);
         if(professeurOpt.isEmpty()) throw new NotFoundException("No professeur has code :" + codeProfesseur);
         session.remove(professeurOpt.get());
@@ -56,17 +62,18 @@ public class ProfesseurRepository implements InterfaceCRUD<Professeur>{
 
     public Collection<Professeur> findAll(){
         Transaction transaction = session.getTransaction();
+        transaction.begin();
         Collection<Professeur> professeurCollection = session.createQuery("from Professeur p order by p.createdAt DESC ",Professeur.class).getResultList();
         transaction.commit();
         return professeurCollection;
     }
 
     public Collection<Professeur> nameLike(String name) {
-        String query = "from Professeur p where name like :name order by p.createdAt DESC " ;
+        String query = "from Professeur p where lower(name)like lower(concat('%' ,:name,'%' ))order by p.createdAt DESC " ;
         Transaction transaction = session.beginTransaction();
         Collection<Professeur> professeurCollection =  session
                 .createQuery(query, Professeur.class)
-                .setParameter("name", "%" + name + "%").getResultList();
+                .setParameter("name", name).getResultList();
 
         transaction.commit();
         return professeurCollection;
@@ -74,11 +81,11 @@ public class ProfesseurRepository implements InterfaceCRUD<Professeur>{
 
     public Collection<Professeur> gradeLike(String gradeName) {
         String query = "select p from Professeur p " +
-                "left join fetch p.grade where p.grade.designation like :name order by p.createdAt DESC" ;
+                "left join fetch p.grade where LOWER(p.grade.designation) like lower(concat('%',:name,'%')) order by p.createdAt DESC" ;
         Transaction transaction = session.beginTransaction();
         Collection<Professeur> professeurCollection =  session
                 .createQuery(query, Professeur.class)
-                .setParameter("name", "%" + gradeName + "%").getResultList();
+                .setParameter("name", gradeName ).getResultList();
 
         transaction.commit();
         return professeurCollection;

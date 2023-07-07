@@ -3,10 +3,7 @@ package com.edelph.jhon.gestion_salle.entity;
 import com.edelph.jhon.gestion_salle.util.GenreConverter;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -16,6 +13,7 @@ import java.time.Instant;
 @Table(name = "professeur")
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class Professeur {
@@ -47,4 +45,10 @@ public class Professeur {
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
+
+    public void update(Professeur professeur){
+       setName(professeur.getName());
+        setGenre(professeur.getGenre());
+        setGrade(professeur.getGrade());
+    }
 }

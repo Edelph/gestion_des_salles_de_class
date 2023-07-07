@@ -33,4 +33,8 @@ public class Salle {
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
+
+    public void update(Salle salle){
+        setDesignation(salle.getDesignation());
+    }
 }

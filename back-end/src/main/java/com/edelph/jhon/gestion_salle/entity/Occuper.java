@@ -39,8 +39,14 @@ public class Occuper {
     private Salle salle;
 
     @NotNull
+    @Temporal(TemporalType.DATE)
     private Date dateOccupe;
-
+    @NotNull
+    @Temporal(TemporalType.TIME)
+    private Date startTime;
+    @NotNull
+    @Temporal(TemporalType.TIME)
+    private Date endTime;
     @CreationTimestamp
     @Column(name = "created_at",nullable = false)
     private Instant createdAt;
@@ -48,4 +54,12 @@ public class Occuper {
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
+
+    public void update(Occuper occuper){
+        setProfesseur(occuper.getProfesseur());
+        setSalle(occuper.getSalle());
+        setEndTime(occuper.getEndTime());
+        setStartTime(occuper.getStartTime());
+        setDateOccupe(occuper.getDateOccupe());
+    }
 }

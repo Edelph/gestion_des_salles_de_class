@@ -18,7 +18,7 @@ public class GradeService {
         return gradeRepository.read(id);
     }
     public Grade save(Grade grade){
-        return gradeRepository.update(grade);
+        return gradeRepository.create(grade);
     }
 
     public Grade update(Grade grade){
