@@ -1,5 +1,15 @@
 import React from "react";
+import Container from "react-bootstrap/Container";
+import Navbar from "react-bootstrap/Navbar";
 
-export const nav_bar = () => {
-  return <div>nav_bar</div>;
+const MyNavBar = () => {
+  return (
+    <Navbar className="bg-body-tertiary">
+      <Container>
+        <Navbar.Brand href="#home">Gestion salle de classe</Navbar.Brand>
+      </Container>
+    </Navbar>
+  );
 };
+
+export default MyNavBar;

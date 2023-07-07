@@ -1,11 +1,12 @@
 import { API } from "./config";
+import axios from "axios";
 
 class GradeService {
   getGrades() {
-    return fetch(`${API}/grades`);
+    return axios.get(`${API}/grades`);
   }
   getGrade(id) {
-    return fetch(`${API}/grades/${id}`);
+    return axios.get(`${API}/grades/${id}`);
   }
   addGrade(grade) {
     return fetch(`${API}/grades`, {

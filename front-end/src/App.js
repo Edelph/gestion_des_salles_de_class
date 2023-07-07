@@ -1,14 +1,19 @@
 import "./App.css";
-import GradePage from "./components/pages/grade";
 
 //theme
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 
 //core
 import "primereact/resources/primereact.min.css";
+import MyNavbar from "./components/nav_bar";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
-  return <GradePage />;
+  return (
+    <>
+      <MyNavbar />
+    </>
+  );
 }
 
 export default App;

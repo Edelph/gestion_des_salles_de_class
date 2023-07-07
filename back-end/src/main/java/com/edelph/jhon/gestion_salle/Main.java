@@ -28,7 +28,7 @@ public class Main {
         // in com.edelph.jhon.gestion_salle package
 
         final ResourceConfig rc = new ResourceConfig().packages("com.edelph.jhon.gestion_salle.resources");
-
+        rc.register(new com.edelph.jhon.gestion_salle.config.CorsFilter());
         // create and start a new instance of grizzly http server
         // exposing the Jersey application at BASE_URI
         return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
