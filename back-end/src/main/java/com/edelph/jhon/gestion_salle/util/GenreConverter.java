@@ -8,7 +8,8 @@ public class GenreConverter implements AttributeConverter<Genre, Character> {
     @Override
     public Character convertToDatabaseColumn(Genre attribute) {
         if (attribute == null) return null;
-        return Genre.FEMININ.getCode();
+        if(attribute.getCode() == Genre.FEMININ.getCode()) return Genre.FEMININ.getCode();
+        return Genre.MASCULIN.getCode();
     }
 
     @Override

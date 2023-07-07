@@ -13,7 +13,7 @@ public class GradeRepository implements InterfaceCRUD<Grade> {
     Session session;
 
     public GradeRepository() {
-        session = MySessionFactory.getSessionFactory().getCurrentSession();
+        session = MySessionFactory.getSessionFactory().openSession();
     }
 
     @Override
@@ -22,6 +22,7 @@ public class GradeRepository implements InterfaceCRUD<Grade> {
         if(!transaction.isActive()) transaction.begin();
         session.persist(grade);
         transaction.commit();
+        session.close();
         return grade;
     }
 
@@ -31,6 +32,7 @@ public class GradeRepository implements InterfaceCRUD<Grade> {
         if(!transaction.isActive()) transaction.begin();
         Optional<Grade> gradeOptional = session.byId(Grade.class).loadOptional(idThing);
         transaction.commit();
+        session.close();
         if(gradeOptional.isPresent()) return gradeOptional.get();
         throw new NotFoundException("Not found grade having id " + idThing);
     }
@@ -43,6 +45,7 @@ public class GradeRepository implements InterfaceCRUD<Grade> {
         gradeDB.setDesignation(grade.getDesignation());
         session.flush();
         transaction.commit();
+        session.close();
         return grade;
     }
 
@@ -66,6 +69,7 @@ public class GradeRepository implements InterfaceCRUD<Grade> {
                         .setParameter("designation","%"+designation+"%")
                         .getResultList();
         transaction.commit();
+        session.close();
         return gradeCollection;
     }
 
@@ -73,11 +77,12 @@ public class GradeRepository implements InterfaceCRUD<Grade> {
     public List<Grade> findAll() {
         String query = "from Grade g order by g.createdAt desc ";
 
-        Transaction transaction = session.beginTransaction();
+        Transaction transaction = session.getTransaction();
         if(!transaction.isActive()) transaction.begin();
         Collection<Grade> gradeCollection =  session.createQuery(query,Grade.class)
                 .getResultList();
         transaction.commit();
+        session.close();
         return gradeCollection.stream().toList();
     }
 }

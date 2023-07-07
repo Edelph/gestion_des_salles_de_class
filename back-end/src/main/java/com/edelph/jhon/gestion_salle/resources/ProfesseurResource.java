@@ -37,6 +37,7 @@ public class ProfesseurResource {
     @Path("/{codeProf}")
     public Professeur createProfesseur(@PathParam("codeProf") Long codeProf, Professeur professeur){
         ProfesseurService service = new ProfesseurService();
+        System.out.println(professeur);
         professeur.setCodeProf(codeProf);
         return service.update(professeur);
     }

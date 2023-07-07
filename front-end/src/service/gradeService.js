@@ -9,6 +9,7 @@ class GradeService {
     return axios.get(`${API}/grades/${id}`);
   }
   addGrade(grade) {
+    console.log("add grade", grade);
     return axios.post(`${API}/grades`, { ...grade });
   }
   updateGrade(id, grade) {

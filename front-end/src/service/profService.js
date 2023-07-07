@@ -1,29 +1,25 @@
 import { API } from "./config";
+import axios from "axios";
 
 class ProfService {
   getProfs() {
-    return fetch(`${API}/professeurs`);
+    return axios.get(`${API}/professeurs`);
   }
   getProf(id) {
-    return fetch(`${API}/professeurs/${id}`);
+    return axios.get(`${API}/professeurs/${id}`);
   }
   addProf(prof) {
-    return fetch(`${API}/professeurs`, {
-      method: "POST",
-      body: JSON.stringify(prof),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((res) => res.json());
+    return axios.post(`${API}/professeurs`, { ...prof });
   }
   updateProf(id, prof) {
-    return fetch(`${API}/grades/${id}`, {
-      method: "PUT",
-      body: JSON.stringify(prof),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    return axios.put(`${API}/professeurs/${id}`, { ...prof });
+  }
+  filter(search) {
+    return axios.get(`${API}/professeurs/search/${search}`);
+  }
+
+  deleteProf(id) {
+    return axios.delete(`${API}/professeurs/${id}`);
   }
 }
 

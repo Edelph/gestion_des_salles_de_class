@@ -10,14 +10,16 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import GradePage from "./pages/grade-page";
 import { Container, Row } from "react-bootstrap";
 import SallePage from "./pages/salle-page";
+import ProfPage from "./pages/prof-page";
 
 function App() {
   return (
     <>
       <MyNavbar />
       <Container>
-        {/* <GradePage /> */}
-        <SallePage />
+        {/* <GradePage />
+        <SallePage /> */}
+        <ProfPage />
       </Container>
     </>
   );

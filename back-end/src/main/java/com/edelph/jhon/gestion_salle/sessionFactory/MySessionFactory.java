@@ -1,8 +1,5 @@
 package com.edelph.jhon.gestion_salle.sessionFactory;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 

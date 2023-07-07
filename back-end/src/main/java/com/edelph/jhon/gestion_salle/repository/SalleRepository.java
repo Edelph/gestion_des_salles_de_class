@@ -24,6 +24,7 @@ public class SalleRepository implements InterfaceCRUD<Salle> {
         if(!transaction.isActive()) transaction.begin();
         session.persist(salle);
         transaction.commit();
+        session.close();
         return salle;
     }
 
@@ -45,6 +46,7 @@ public class SalleRepository implements InterfaceCRUD<Salle> {
         salleDB.update(salle);
         session.flush();
         transaction.commit();
+        session.close();
         return salle;
     }
 
@@ -56,6 +58,7 @@ public class SalleRepository implements InterfaceCRUD<Salle> {
         if(salleOptional.isEmpty()) throw new NotFoundException("No Salle has code :" + codeSalle);
         session.remove(salleOptional.get());
         transaction.commit();
+        session.close();
         return true;
     }
 
@@ -64,6 +67,7 @@ public class SalleRepository implements InterfaceCRUD<Salle> {
         if(!transaction.isActive()) transaction.begin();
         Collection<Salle> salleCollection = session.createQuery("from Salle s order by s.createdAt DESC ",Salle.class).getResultList();
         transaction.commit();
+        session.close();
         return salleCollection;
     }
 
@@ -76,6 +80,7 @@ public class SalleRepository implements InterfaceCRUD<Salle> {
                 .setParameter("designation", name).getResultList();
 
         transaction.commit();
+        session.close();
         return salleCollection;
     }
 }

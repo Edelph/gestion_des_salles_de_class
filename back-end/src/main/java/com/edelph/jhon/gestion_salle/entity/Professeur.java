@@ -49,6 +49,7 @@ public class Professeur {
     public void update(Professeur professeur){
        setName(professeur.getName());
         setGenre(professeur.getGenre());
+        System.out.println("genre"+ professeur.genre.name());
         setGrade(professeur.getGrade());
     }
 }
