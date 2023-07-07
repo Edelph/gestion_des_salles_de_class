@@ -21,7 +21,7 @@ public class SalleRepository implements InterfaceCRUD<Salle> {
     @Override
     public Salle create(Salle salle) {
         Transaction transaction = session.getTransaction();
-        transaction.begin();
+        if(!transaction.isActive()) transaction.begin();
         session.persist(salle);
         transaction.commit();
         return salle;
@@ -30,7 +30,7 @@ public class SalleRepository implements InterfaceCRUD<Salle> {
     @Override
     public Salle read(Long codeSalle) {
         Transaction transaction = session.getTransaction();
-        transaction.begin();
+        if(!transaction.isActive()) transaction.begin();
         Optional<Salle> salleOpt =  session.byId(Salle.class).loadOptional(codeSalle);
         transaction.commit();
         if (salleOpt.isPresent()) return salleOpt.get();
@@ -40,7 +40,7 @@ public class SalleRepository implements InterfaceCRUD<Salle> {
     @Override
     public Salle update(Salle salle) {
         Transaction transaction = session.getTransaction();
-        transaction.begin();
+        if(!transaction.isActive()) transaction.begin();
         Salle salleDB = session.find(Salle.class,salle.getCodeSal());
         salleDB.update(salle);
         session.flush();
@@ -51,7 +51,7 @@ public class SalleRepository implements InterfaceCRUD<Salle> {
     @Override
     public boolean delete(Long codeSalle) {
         Transaction transaction = session.getTransaction();
-        transaction.begin();
+        if(!transaction.isActive()) transaction.begin();
         Optional<Salle> salleOptional =  session.byId(Salle.class).loadOptional(codeSalle);
         if(salleOptional.isEmpty()) throw new NotFoundException("No Salle has code :" + codeSalle);
         session.remove(salleOptional.get());
@@ -61,19 +61,19 @@ public class SalleRepository implements InterfaceCRUD<Salle> {
 
     public Collection<Salle> findAll(){
         Transaction transaction = session.getTransaction();
-        transaction.begin();
+        if(!transaction.isActive()) transaction.begin();
         Collection<Salle> salleCollection = session.createQuery("from Salle s order by s.createdAt DESC ",Salle.class).getResultList();
         transaction.commit();
         return salleCollection;
     }
 
-    public Collection<Salle> nameLike(String name) {
+    public Collection<Salle> salleLike(String name) {
         String query = "from Salle s where lower(s.designation)like lower(concat('%' ,:designation,'%' )) order by s.createdAt DESC " ;
         Transaction transaction = session.beginTransaction();
-        transaction.begin();
+        if(!transaction.isActive()) transaction.begin();
         Collection<Salle> salleCollection =  session
                 .createQuery(query, Salle.class)
-                .setParameter("name", name).getResultList();
+                .setParameter("designation", name).getResultList();
 
         transaction.commit();
         return salleCollection;

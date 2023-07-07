@@ -13,12 +13,13 @@ public class GradeRepository implements InterfaceCRUD<Grade> {
     Session session;
 
     public GradeRepository() {
-        session = MySessionFactory.getSessionFactory().openSession();
+        session = MySessionFactory.getSessionFactory().getCurrentSession();
     }
 
     @Override
     public Grade create(Grade grade) {
         Transaction transaction = session.beginTransaction();
+        if(!transaction.isActive()) transaction.begin();
         session.persist(grade);
         transaction.commit();
         return grade;
@@ -27,9 +28,9 @@ public class GradeRepository implements InterfaceCRUD<Grade> {
     @Override
     public Grade read(Long idThing) {
         Transaction transaction = session.beginTransaction();
+        if(!transaction.isActive()) transaction.begin();
         Optional<Grade> gradeOptional = session.byId(Grade.class).loadOptional(idThing);
         transaction.commit();
-        session.clear();
         if(gradeOptional.isPresent()) return gradeOptional.get();
         throw new NotFoundException("Not found grade having id " + idThing);
     }
@@ -37,6 +38,7 @@ public class GradeRepository implements InterfaceCRUD<Grade> {
     @Override
     public Grade update(Grade grade) {
         Transaction transaction = session.beginTransaction();
+        if(!transaction.isActive()) transaction.begin();
         Grade gradeDB = session.find(Grade.class, grade.getCodeGrade());
         gradeDB.setDesignation(grade.getDesignation());
         session.flush();
@@ -47,6 +49,7 @@ public class GradeRepository implements InterfaceCRUD<Grade> {
     @Override
     public boolean delete(Long idGrade) {
         Transaction transaction = session.beginTransaction();
+        if(!transaction.isActive()) transaction.begin();
         Optional<Grade> gradeOptional = session.byId(Grade.class).loadOptional(idGrade);
         if(gradeOptional.isEmpty()) throw new NotFoundException("Not found grade having id " + idGrade);
         session.remove(gradeOptional.get());
@@ -58,6 +61,7 @@ public class GradeRepository implements InterfaceCRUD<Grade> {
         String query = "from Grade as g where g.designation like :designation ";
 
         Transaction transaction = session.beginTransaction();
+        if(!transaction.isActive()) transaction.begin();
         Collection<Grade> gradeCollection =  session.createQuery(query,Grade.class)
                         .setParameter("designation","%"+designation+"%")
                         .getResultList();
@@ -70,6 +74,7 @@ public class GradeRepository implements InterfaceCRUD<Grade> {
         String query = "from Grade g order by g.createdAt desc ";
 
         Transaction transaction = session.beginTransaction();
+        if(!transaction.isActive()) transaction.begin();
         Collection<Grade> gradeCollection =  session.createQuery(query,Grade.class)
                 .getResultList();
         transaction.commit();

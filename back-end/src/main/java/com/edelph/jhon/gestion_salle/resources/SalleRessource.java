@@ -1,6 +1,8 @@
 package com.edelph.jhon.gestion_salle.resources;
 
+import com.edelph.jhon.gestion_salle.entity.Grade;
 import com.edelph.jhon.gestion_salle.entity.Salle;
+import com.edelph.jhon.gestion_salle.service.GradeService;
 import com.edelph.jhon.gestion_salle.service.SalleService;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -15,6 +17,12 @@ public class SalleRessource {
     public List<Salle> getSalles(){
         SalleService service = new SalleService();
         return service.getAllSalle();
+    }
+    @GET
+    @Path("/search/{patern}")
+    public List<Salle> searchGrad(@PathParam("patern") String patern){
+        SalleService service = new SalleService();
+        return service.getSalleLike(patern);
     }
 
     @GET

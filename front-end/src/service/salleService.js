@@ -1,29 +1,25 @@
 import { API } from "./config";
+import axios from "axios";
 
 class SalleService {
   getSalles() {
-    return fetch(`${API}/salles`);
+    return axios.get(`${API}/salles`);
   }
   getSalle(id) {
-    return fetch(`${API}/salles/${id}`);
+    return axios.get(`${API}/salles/${id}`);
   }
   addSalle(salle) {
-    return fetch(`${API}/salles`, {
-      method: "POST",
-      body: JSON.stringify(salle),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((res) => res.json());
+    return axios.post(`${API}/salles`, { ...salle });
   }
   updateSalle(id, salle) {
-    return fetch(`${API}/salles/${id}`, {
-      method: "PUT",
-      body: JSON.stringify(salle),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    return axios.put(`${API}/salles/${id}`, { ...salle });
+  }
+  filter(search) {
+    return axios.get(`${API}/salles/search/${search}`);
+  }
+
+  deleteSalle(id) {
+    return axios.delete(`${API}/salles/${id}`);
   }
 }
 

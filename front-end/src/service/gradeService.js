@@ -9,22 +9,17 @@ class GradeService {
     return axios.get(`${API}/grades/${id}`);
   }
   addGrade(grade) {
-    return fetch(`${API}/grades`, {
-      method: "POST",
-      body: JSON.stringify(grade),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((res) => res.json());
+    return axios.post(`${API}/grades`, { ...grade });
   }
   updateGrade(id, grade) {
-    return fetch(`${API}/grades/${id}`, {
-      method: "PUT",
-      body: JSON.stringify(grade),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    return axios.put(`${API}/grades/${id}`, { ...grade });
+  }
+  filter(search) {
+    return axios.get(`${API}/grades/search/${search}`);
+  }
+
+  deleteGrade(id) {
+    return axios.delete(`${API}/grades/${id}`);
   }
 }
 

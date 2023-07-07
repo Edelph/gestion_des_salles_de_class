@@ -30,8 +30,8 @@ public class SalleService {
     public boolean delete(Long codeProf) {
         return repository.delete(codeProf);
     }
-    public List<Salle> getProfByName(String name){
-        return repository.nameLike(name).stream().toList();
+    public List<Salle> getSalleLike(String name){
+        return repository.salleLike(name).stream().toList();
     }
 
 }
