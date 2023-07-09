@@ -101,7 +101,7 @@ const ProfPage = () => {
 
   const searchHandle = async (value) => {
     setSearch(value);
-    if (value === "") getGrades();
+    if (value === "") getProfs();
     else {
       const response = await profService.filter(value);
       if (response.status === 200) {

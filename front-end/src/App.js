@@ -11,15 +11,19 @@ import GradePage from "./pages/grade-page";
 import { Container, Row } from "react-bootstrap";
 import SallePage from "./pages/salle-page";
 import ProfPage from "./pages/prof-page";
+import OccupePage from "./pages/occupe-page";
+import FormOccup from "./pages/form-occupe";
 
 function App() {
   return (
     <>
       <MyNavbar />
       <Container>
-        {/* <GradePage />
-        <SallePage /> */}
-        <ProfPage />
+        <GradePage />
+        <SallePage />
+         <ProfPage />
+        <OccupePage />
+        <FormOccup />
       </Container>
     </>
   );

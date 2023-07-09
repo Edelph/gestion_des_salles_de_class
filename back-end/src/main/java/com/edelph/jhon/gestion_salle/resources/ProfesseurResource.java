@@ -2,7 +2,9 @@ package com.edelph.jhon.gestion_salle.resources;
 
 import com.edelph.jhon.gestion_salle.entity.Genre;
 import com.edelph.jhon.gestion_salle.entity.Professeur;
+import com.edelph.jhon.gestion_salle.entity.Salle;
 import com.edelph.jhon.gestion_salle.service.ProfesseurService;
+import com.edelph.jhon.gestion_salle.service.SalleService;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 
@@ -17,6 +19,12 @@ public class ProfesseurResource {
     public List<Professeur> getProfesseurs(){
         ProfesseurService service = new ProfesseurService();
        return service.getAllProfesseurs();
+    }
+    @GET
+    @Path("/search/{patern}")
+    public List<Professeur> searchGrad(@PathParam("patern") String patern){
+        ProfesseurService service = new ProfesseurService();
+        return service.getProfByName(patern);
     }
 
     @GET

@@ -10,7 +10,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "occuper")
@@ -40,13 +41,13 @@ public class Occuper {
 
     @NotNull
     @Temporal(TemporalType.DATE)
-    private Date dateOccupe;
+    private LocalDate dateOccupe;
     @NotNull
     @Temporal(TemporalType.TIME)
-    private Date startTime;
+    private LocalTime startTime;
     @NotNull
     @Temporal(TemporalType.TIME)
-    private Date endTime;
+    private LocalTime endTime;
     @CreationTimestamp
     @Column(name = "created_at",nullable = false)
     private Instant createdAt;
@@ -61,5 +62,9 @@ public class Occuper {
         setEndTime(occuper.getEndTime());
         setStartTime(occuper.getStartTime());
         setDateOccupe(occuper.getDateOccupe());
+    }
+
+    public void setDateOccupe(){
+
     }
 }

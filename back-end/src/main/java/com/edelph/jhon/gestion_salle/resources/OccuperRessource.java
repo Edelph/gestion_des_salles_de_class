@@ -27,6 +27,7 @@ public class OccuperRessource {
     @POST
     public Occuper createProfesseur(Occuper occuper){
         OccuperService service = new OccuperService();
+        System.out.println(occuper);
         return service.save(occuper);
     }
     @PUT

@@ -1,29 +1,25 @@
 import { API } from "./config";
+import axios from "axios";
 
 class OccupationService {
-  getOccupations() {
-    return fetch(`${API}/occupes`);
+  getOccs() {
+    return axios.get(`${API}/occupes`);
   }
-  getOccupation(id) {
-    return fetch(`${API}/occupes/${id}`);
+  getOcc(id) {
+    return axios.get(`${API}/occupes/${id}`);
   }
-  addOccupation(occuper) {
-    return fetch(`${API}/occupes`, {
-      method: "POST",
-      body: JSON.stringify(occuper),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((res) => res.json());
+  addOcc(occupe) {
+    return axios.post(`${API}/occupes`, { ...occupe });
   }
-  updateOccupation(id, occuper) {
-    return fetch(`${API}/occupes/${id}`, {
-      method: "PUT",
-      body: JSON.stringify(occuper),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+  updateOcc(id, occupe) {
+    return axios.put(`${API}/occupes/${id}`, { ...occupe });
+  }
+  filter(search) {
+    return axios.get(`${API}/occupes/search/${search}`);
+  }
+
+  deleteOcc(id) {
+    return axios.delete(`${API}/occupes/${id}`);
   }
 }
 
