@@ -13,19 +13,34 @@ import SallePage from "./pages/salle-page";
 import ProfPage from "./pages/prof-page";
 import OccupePage from "./pages/occupe-page";
 import FormOccup from "./pages/form-occupe";
+import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 
-function App() {
+const AppRoute = () => {
   return (
     <>
       <MyNavbar />
-      <Container>
-        <GradePage />
-        <SallePage />
-         <ProfPage />
-        <OccupePage />
-        <FormOccup />
+      <Container className="d-flex justify-content-center">
+        <Outlet />
       </Container>
     </>
+  );
+};
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<AppRoute />}>
+          <Route path="grades" element={<GradePage />} />
+          <Route path="salle-de-classe" element={<SallePage />} />
+          <Route path="professeurs" element={<ProfPage />} />
+          <Route path="occupations" element={<OccupePage />} />
+          <Route path="occupations/form" element={<FormOccup />} />
+          <Route path="occupations/form/:occId" element={<FormOccup />} />
+          <Route />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 

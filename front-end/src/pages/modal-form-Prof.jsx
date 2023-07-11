@@ -3,7 +3,14 @@ import { Container, Form, InputGroup, ListGroup, Stack } from "react-bootstrap";
 import MyModal from "../components/modal";
 import profService from "../service/profService";
 
-const ModalFormProf = ({ onOk, selected, onLoad, setShow, show }) => {
+const ModalFormProf = ({
+  onOk,
+  setSelected,
+  selected,
+  onLoad,
+  setShow,
+  show,
+}) => {
   const [profs, setProfs] = useState([]);
   const [search, setSearch] = useState("");
   useEffect((_) => {
@@ -27,7 +34,10 @@ const ModalFormProf = ({ onOk, selected, onLoad, setShow, show }) => {
   };
   return (
     <MyModal
-      onOk={(e) => setShow(false)}
+      onOk={(e) => {
+        setShow(false);
+        onOk();
+      }}
       onLoad={onLoad}
       setShow={setShow}
       show={show}
@@ -53,7 +63,7 @@ const ModalFormProf = ({ onOk, selected, onLoad, setShow, show }) => {
               <Stack direction="horizontal" gap={3}>
                 <div>
                   <Form.Check
-                    onChange={(e) => onOk({ ...prof })}
+                    onChange={(e) => setSelected({ ...prof })}
                     inline
                     name="grade"
                     type="radio"

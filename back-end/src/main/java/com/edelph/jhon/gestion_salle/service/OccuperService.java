@@ -2,6 +2,9 @@ package com.edelph.jhon.gestion_salle.service;
 
 import com.edelph.jhon.gestion_salle.entity.Occuper;
 import com.edelph.jhon.gestion_salle.repository.OccuperRepository;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 
@@ -36,20 +39,20 @@ public class OccuperService {
         return repository.delete(codeocc);
     }
 
-    public List<Occuper> findByInterval(Date start, Date end){
+    public List<Occuper> findByInterval(LocalTime start, LocalTime end){
         return repository.findByInterval(start, end).stream().toList();
     }
-    public List<Occuper> findByInterval(Date date, Date start, Date end){
+    public List<Occuper> findByInterval(LocalDate date, LocalTime start, LocalTime end){
         return repository.findByInterval(date, start, end).stream().toList();
     }
-    public List<Occuper> findNotInInterval(Date date, Date start, Date end){
+    public List<Occuper> findNotInInterval(LocalDate date, LocalTime start, LocalTime end){
         return repository.findNotInInterval(start, end).stream().toList();
     }
 
-    public List<Occuper> findByDate(Date date){
+    public List<Occuper> findByDate(LocalDate date){
         return repository.findByDate(date).stream().toList();
     }
-    public List<Occuper> findNotInDate(Date date){
+    public List<Occuper> findNotInDate(LocalDate date){
         return repository.findNotOccuper(date).stream().toList();
     }
 

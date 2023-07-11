@@ -6,6 +6,8 @@ import com.edelph.jhon.gestion_salle.sessionFactory.MySessionFactory;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Optional;
@@ -65,7 +67,7 @@ public class OccuperRepository implements InterfaceCRUD<Occuper> {
         return occuperCollection;
     }
 
-    public Collection<Occuper> findByDate(Date date){
+    public Collection<Occuper> findByDate(LocalDate date){
         String query = "from Occuper o where o.dateOccupe = :dateOcc  order by o.createdAt DESC ";
         Transaction transaction = session.getTransaction();
         transaction.begin();
@@ -76,7 +78,7 @@ public class OccuperRepository implements InterfaceCRUD<Occuper> {
         return occuperCollection;
     }
 
-    public Collection<Occuper> findNotOccuper(Date date){
+    public Collection<Occuper> findNotOccuper(LocalDate date){
         String query = "from Occuper o where o.dateOccupe != :dateOcc  order by o.createdAt DESC ";
         Transaction transaction = session.getTransaction();
         transaction.begin();
@@ -88,7 +90,7 @@ public class OccuperRepository implements InterfaceCRUD<Occuper> {
     }
 
 
-    public Collection<Occuper> findByInterval(Date start , Date end){
+    public Collection<Occuper> findByInterval(LocalTime start , LocalTime end){
         String query = "from Occuper o where o.startTime = :start and o.endTime =:end  order by o.createdAt DESC ";
         Transaction transaction = session.getTransaction();
         transaction.begin();
@@ -99,7 +101,7 @@ public class OccuperRepository implements InterfaceCRUD<Occuper> {
         transaction.commit();
         return occuperCollection;
     }
-    public Collection<Occuper> findNotInInterval(Date start , Date end){
+    public Collection<Occuper> findNotInInterval(LocalTime start , LocalTime end){
         String query = "from Occuper o where o.startTime!= :start and o.endTime!=:end  order by o.createdAt DESC ";
         Transaction transaction = session.getTransaction();
         transaction.begin();
@@ -111,7 +113,7 @@ public class OccuperRepository implements InterfaceCRUD<Occuper> {
         return occuperCollection;
     }
 
-    public Collection<Occuper> findByInterval(Date date, Date start , Date end){
+    public Collection<Occuper> findByInterval(LocalDate date, LocalTime start , LocalTime end){
         String query = "from Occuper o where o.dateOccupe = :dateO and o.startTime = :start and o.endTime =:end  order by o.createdAt DESC ";
         Transaction transaction = session.getTransaction();
         transaction.begin();

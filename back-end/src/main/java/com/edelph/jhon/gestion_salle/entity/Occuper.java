@@ -25,14 +25,14 @@ public class Occuper {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long codeOcc;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(
             name = "professeur_code",
             foreignKey = @ForeignKey(name = "O_PROFESSEUR_CODE")
     )
     private Professeur professeur;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(
             name = "salle_code",
             foreignKey = @ForeignKey(name = "0_SALLE_CODE")

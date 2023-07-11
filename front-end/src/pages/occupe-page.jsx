@@ -9,12 +9,14 @@ import {
 } from "react-bootstrap";
 import ModalSupp from "../components/ModalSupp";
 import occupService from "../service/occupationService";
+import { useNavigate } from "react-router-dom";
 
 const OccupePage = () => {
   const [occupations, setOccupations] = useState([]);
   const [search, setSearch] = useState("");
   const [selectedOcc, setSelectedOcc] = useState({});
   const [load, setLoad] = useState(false);
+  const navigate = useNavigate();
 
   const [showSupp, setShowSupp] = useState(false);
   useEffect(() => {
@@ -62,7 +64,15 @@ const OccupePage = () => {
         <h1 className="text-center"> CRUD Occupation</h1>
         <Stack className="mx-4 py-4 px-4" direction="horizontal" gap={3}>
           <div className="p-2">
-            <Button variant="primary">Ajouter</Button>
+            <Button
+              onClick={(e) => {
+                console.log("redirect");
+                navigate("/occupations/form");
+              }}
+              variant="primary"
+            >
+              Ajouter
+            </Button>
           </div>
           <div className="p-2 ms-auto">
             <InputGroup>
@@ -80,10 +90,19 @@ const OccupePage = () => {
           {occupations.map((occ, index) => (
             <ListGroup.Item key={index}>
               <Stack direction="horizontal" gap={3}>
-                <h5 className="me-auto">
-                  {occ?.professeur.name} {occ?.salle.codeSal}
-                </h5>
-                <Button className="fs-15" variant="secondary">
+                <div className="me-auto">
+                  <h5>
+                    {occ?.professeur.name} {occ?.salle.designation}
+                  </h5>
+                  <h5>
+                    {occ?.dateOccupe} =!! {occ?.startTime} - {occ?.endTime}
+                  </h5>
+                </div>
+                <Button
+                  onClick={(e) => navigate(`/occupations/form/${occ.codeOcc}`)}
+                  className="fs-15"
+                  variant="secondary"
+                >
                   modifier
                 </Button>
                 <div className="vr" />

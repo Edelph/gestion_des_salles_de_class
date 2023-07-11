@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Col,
@@ -11,6 +11,7 @@ import {
 import ModalFormProf from "./modal-form-Prof";
 import ModalFormSalle from "./modal-form-salle";
 import occupService from "../service/occupationService";
+import { useNavigate, useParams } from "react-router-dom";
 
 const FormOccup = () => {
   const [selectedOcc, setSelectedOcc] = useState({});
@@ -19,53 +20,83 @@ const FormOccup = () => {
   const [showModalSalle, setShowModalSalle] = useState(false);
   const [showModalProf, setShowModalProf] = useState(false);
   const [load, setLoad] = useState(false);
+  const navigate = useNavigate();
+
+  let { occId } = useParams();
+  useEffect((_) => {
+    if (occId !== undefined) getOcc(occId);
+  }, []);
+
+  const getOcc = async (occId) => {
+    const response = await occupService.getOcc(occId);
+    if (response.status === 200) {
+      setSelectedOcc({ ...response.data });
+    }
+  };
 
   const addOcc = async () => {
     setLoad(true);
-    const newOcc = {
-      ...selectedOcc,
-      professeur: { ...selectedProf },
-      salle: { ...selectedSalle },
-    };
-    console.log(selectedOcc);
-    if (newOcc === "") return;
+    if (selectedOcc === "") return;
 
-    if (newOcc.codeOcc) {
-      const response = await occupService.updateOcc(newOcc.codeOcc, {
-        ...newOcc,
+    if (selectedOcc.codeOcc) {
+      const response = await occupService.updateOcc(selectedOcc.codeOcc, {
+        ...selectedOcc,
       });
       if (response.status === 200) {
         setSelectedOcc({});
+        setSelectedProf({});
+        setSelectedSalle({});
         setLoad(false);
+        navigate("/occupations");
       }
     } else {
-      const response = await occupService.addOcc({ ...newOcc });
+      const response = await occupService.addOcc({ ...selectedOcc });
       if (response.status === 200) {
         setSelectedOcc({});
+        setSelectedProf({});
+        setSelectedSalle({});
         setLoad(false);
+        navigate("/occupations");
       }
     }
+  };
+  const okProfHandle = () => {
+    if (selectedProf)
+      setSelectedOcc((occ) => {
+        return { ...occ, professeur: { ...selectedProf } };
+      });
+  };
+  const okSalleHandle = () => {
+    if (selectedSalle)
+      setSelectedOcc((occ) => {
+        return { ...occ, salle: { ...selectedSalle } };
+      });
   };
 
   return (
     <>
       <ModalFormProf
-        onOk={setSelectedProf}
+        onOk={okProfHandle}
+        setSelected={setSelectedProf}
         selected={selectedProf}
         onLoad={load}
         setShow={setShowModalProf}
         show={showModalProf}
       />
       <ModalFormSalle
-        onOk={setSelectedSalle}
+        onOk={okSalleHandle}
+        setSelected={setSelectedSalle}
         selected={selectedSalle}
         onLoad={load}
         setShow={setShowModalSalle}
         show={showModalSalle}
       />
 
-      <div style={{ width: "500px", marginBottom: "3rem" }}>
+      <div style={{ width: "500px", marginTop: "3rem" }}>
         <Form>
+          <h2 className="mb-4 text-center ">
+            {occId ? "Modifier" : "Ajouter"} un occupation
+          </h2>
           <Container>
             <Form.Group className="mb-3">
               <Form.Label>date : </Form.Label>
@@ -120,24 +151,38 @@ const FormOccup = () => {
             <Form.Label>Prof et Salle : </Form.Label>
             <Row>
               <Col>
-                <Button onClick={(e) => setShowModalProf(true)}>
+                <Button
+                  onClick={(e) => {
+                    selectedOcc.professeur &&
+                      setSelectedProf({ ...selectedOcc.professeur });
+                    setShowModalProf(true);
+                  }}
+                >
                   Proffesseur
                 </Button>
               </Col>
               <Col>
-                <Button onClick={(e) => setShowModalSalle(true)}>Salle</Button>
+                <Button
+                  onClick={(e) => {
+                    selectedOcc.salle &&
+                      setSelectedSalle({ ...selectedOcc.salle });
+                    setShowModalSalle(true);
+                  }}
+                >
+                  Salle
+                </Button>
               </Col>
             </Row>
             <Row>
               <Col>
-                {selectedProf && (
+                {selectedOcc.professeur && (
                   <ListGroup className="mt-2">
                     <ListGroup.Item>
                       <Stack direction="horizontal" gap={3}>
                         <div className="me-auto">
-                          <h6>{selectedProf?.name}</h6>
-                          <i> {selectedProf?.grade?.designation} </i>
-                          <em> || {selectedProf?.genre}</em>
+                          <h6>{selectedOcc.professeur?.name}</h6>
+                          <i> {selectedOcc.professeur?.grade?.designation} </i>
+                          <em> || {selectedOcc.professeur?.genre}</em>
                         </div>
                       </Stack>
                     </ListGroup.Item>
@@ -145,12 +190,12 @@ const FormOccup = () => {
                 )}
               </Col>
               <Col>
-                {selectedSalle && (
+                {selectedOcc.salle && (
                   <ListGroup className="mt-2">
                     <ListGroup.Item>
                       <Stack direction="horizontal" gap={3}>
                         <div className="me-auto">
-                          <h6>{selectedSalle?.designation}</h6>
+                          <h6>{selectedOcc.salle?.designation}</h6>
                         </div>
                       </Stack>
                     </ListGroup.Item>
@@ -166,7 +211,7 @@ const FormOccup = () => {
           >
             <Button variant="secondary">annuler</Button>
             <Button disabled={load} onClick={addOcc} variant="primary">
-              ajouter
+              {occId ? "Modifier" : "ajouer"}
             </Button>
           </Stack>
         </Form>

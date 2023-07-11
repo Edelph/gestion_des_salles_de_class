@@ -8,6 +8,7 @@ import com.edelph.jhon.gestion_salle.service.SalleService;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -47,16 +48,12 @@ public class OccuperRessource {
     @GET
     public List<Occuper> getOccByIntervall(@BeanParam()OccuperFilterBeans filterBeans) {
         OccuperService service = new OccuperService();
-        if( filterBeans.getDate() == null){
-            return service.findByInterval(filterBeans.getStart(), filterBeans.getEnd());
-        }
-        if( filterBeans.getStart() == null && filterBeans.getEnd()==null){
+        if( filterBeans.isDate()){
             return service.findByDate(filterBeans.getDate());
         }
-        if(filterBeans.getStart() != null && filterBeans.getEnd() != null) {
+        if(filterBeans.isHasFilter()) {
             return service.findByInterval(filterBeans.getDate(), filterBeans.getStart(), filterBeans.getEnd());
         }
         return service.getAllOccuper();
     }
-
 }

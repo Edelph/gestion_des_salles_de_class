@@ -3,10 +3,16 @@ import MyModal from "../components/modal";
 import salleService from "../service/salleService";
 import { Container, Form, InputGroup, ListGroup, Stack } from "react-bootstrap";
 
-const ModalFormSalle = ({ onOk, selected, onLoad, setShow, show }) => {
+const ModalFormSalle = ({
+  onOk,
+  setSelected,
+  selected,
+  onLoad,
+  setShow,
+  show,
+}) => {
   const [salles, setSalles] = useState([]);
   const [search, setSearch] = useState("");
-  const [selectedSalle, setSelectedSalle] = useState("");
   useEffect((_) => {
     getProfs();
   }, []);
@@ -28,7 +34,10 @@ const ModalFormSalle = ({ onOk, selected, onLoad, setShow, show }) => {
   };
   return (
     <MyModal
-      onOk={(e) => setShow(false)}
+      onOk={(e) => {
+        setShow(false);
+        onOk();
+      }}
       onLoad={onLoad}
       setShow={setShow}
       show={show}
@@ -54,7 +63,7 @@ const ModalFormSalle = ({ onOk, selected, onLoad, setShow, show }) => {
               <Stack direction="horizontal" gap={3}>
                 <div>
                   <Form.Check
-                    onChange={(e) => onOk({ ...salle })}
+                    onChange={(e) => setSelected({ ...salle })}
                     inline
                     name="grade"
                     type="radio"
