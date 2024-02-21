@@ -72,12 +72,11 @@
 
 
     <build>
-        <plugins>
+        <plugins>       
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
-                <inherited>true</inherited>
                 <configuration>
                     <source>16</source>
                     <target>16</target>
@@ -112,5 +111,8 @@
         <junit-jupiter.version>5.9.1</junit-jupiter.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <surefire.mvn.plugin.version>3.0.0-M7</surefire.mvn.plugin.version>
+        <maven.compiler.source>16</maven.compiler.source>
+        <maven.compiler.target>16</maven.compiler.target>
+        <java.version>17</java.version>
     </properties>
 </project>
